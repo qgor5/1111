@@ -3,26 +3,74 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Тишина — перезагрузись за 60 секунд</title>
-  <meta name="description" content="Простой сайт, чтобы перезагрузиться за 60 секунд. Без рекламы. Без текста. Только ты и тишина.">
-  <meta property="og:title" content="Тишина">
-  <meta property="og:description" content="Перезагрузись за 60 секунд">
-  <meta property="og:image" content="https://tishina.netlify.app/assets/bg1.jpg">
-  <meta property="og:url" content="https://tishina.netlify.app">
-  <link rel="stylesheet" href="css/style.css" />
-  <link rel="manifest" href="manifest.json" />
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='%23ffffff'/></svg>" />
+  <title>Тишина</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #e0f7fa;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      transition: background 10s;
+    }
+    #circle {
+      width: 150px;
+      height: 150px;
+      background: #00796b;
+      border-radius: 50%;
+      transition: transform 4s ease-in-out;
+    }
+    button {
+      margin-top: 30px;
+      padding: 1rem 2rem;
+      font-size: 1.2rem;
+      border: none;
+      background: #004d40;
+      color: white;
+      border-radius: 30px;
+      cursor: pointer;
+    }
+    #timer {
+      margin-top: 20px;
+      font-size: 2rem;
+      color: #004d40;
+    }
+  </style>
 </head>
 <body>
-  <main>
-    <h1>Тишина</h1>
-    <button onclick="startSession()">Перезагрузиться</button>
-    <nav>
-      <a href="breathe.html">Дышать</a>
-      <a href="zen.html">Смотреть</a>
-    </nav>
-  </main>
-  <audio id="bgSound" src="assets/sound.mp3" loop></audio>
-  <script src="js/app.js"></script>
+  <div id="circle"></div>
+  <div id="timer"></div>
+  <button onclick="startSession()">Перезагрузиться</button>
+  <audio id="sound" loop>
+    <source src="https://cdn.pixabay.com/audio/2022/08/10/audio_3b9841e123.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    let timeLeft = 60;
+    let timer;
+    function startSession() {
+      document.getElementById('sound').play();
+      document.body.style.background = '#ffffff';
+      timer = setInterval(() => {
+        timeLeft--;
+        document.getElementById('timer').textContent = timeLeft;
+        const circle = document.getElementById('circle');
+        circle.style.transform = timeLeft % 8 < 4 ? 'scale(1.5)' : 'scale(1)';
+        if (timeLeft <= 0) {
+          clearInterval(timer);
+          document.getElementById('sound').pause();
+          document.getElementById('timer').textContent = "Готово. Иди дальше.";
+          setTimeout(() => {
+            document.getElementById('timer').textContent = "";
+            timeLeft = 60;
+            document.body.style.background = '#e0f7fa';
+          }, 3000);
+        }
+      }, 1000);
+    }
+  </script>
 </body>
 </html>
