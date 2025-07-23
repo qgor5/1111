@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Дышать — Тишина</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <main>
+    <div id="circle"></div>
+    <button onclick="history.back()">Назад</button>
+  </main>
+  <script>
+    const circle = document.getElementById('circle');
+    let inhale = true;
+    setInterval(() => {
+      circle.style.transform = inhale ? 'scale(1.5)' : 'scale(1)';
+      inhale = !inhale;
+    }, 4000);
+  </script>
+</body>
+</html>
