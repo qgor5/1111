@@ -3,21 +3,26 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Дышать — Тишина</title>
+  <title>Тишина — перезагрузись за 60 секунд</title>
+  <meta name="description" content="Простой сайт, чтобы перезагрузиться за 60 секунд. Без рекламы. Без текста. Только ты и тишина.">
+  <meta property="og:title" content="Тишина">
+  <meta property="og:description" content="Перезагрузись за 60 секунд">
+  <meta property="og:image" content="https://tishina.netlify.app/assets/bg1.jpg">
+  <meta property="og:url" content="https://tishina.netlify.app">
   <link rel="stylesheet" href="css/style.css" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='%23ffffff'/></svg>" />
 </head>
 <body>
   <main>
-    <div id="circle"></div>
-    <button onclick="history.back()">Назад</button>
+    <h1>Тишина</h1>
+    <button onclick="startSession()">Перезагрузиться</button>
+    <nav>
+      <a href="breathe.html">Дышать</a>
+      <a href="zen.html">Смотреть</a>
+    </nav>
   </main>
-  <script>
-    const circle = document.getElementById('circle');
-    let inhale = true;
-    setInterval(() => {
-      circle.style.transform = inhale ? 'scale(1.5)' : 'scale(1)';
-      inhale = !inhale;
-    }, 4000);
-  </script>
+  <audio id="bgSound" src="assets/sound.mp3" loop></audio>
+  <script src="js/app.js"></script>
 </body>
 </html>
