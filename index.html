@@ -1,187 +1,23 @@
-<!doctype html>
-<html lang="uk">
+<!DOCTYPE html>
+<html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Подорожуй Україною легко – бронюй квитки на автобус, поїзд, літак за найкращими цінами." />
-  <title>Emergent | Fullstack App</title>
-  <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHZpZXdCb3g9IjAgMCA2NCA2NCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTYiIGZpbGw9IiMwMDAiLz4KPHN2ZyB4PSIxNiIgeT0iMTYiIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgdmlld0JveD0iMCAwIDMyIDMyIiBmaWxsPSJub25lIj4KPHBhdGggZD0iTTE2IDJMMTYuMDEgMzJMMTYgMzJMMTYgWiIgZmlsbD0iI2ZmZiIvPgo8L3N2Zz4KPC9zdmc+Cg==" />
-  <style>
-    body {
-      margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-      background-color: #fafafa;
-      color: #111;
-      line-height: 1.6;
-    }
-    header {
-      text-align: center;
-      padding: 2rem 1rem;
-      background: #fff;
-    }
-    header h1 {
-      font-size: 2.5rem;
-      margin: 0.5rem 0;
-    }
-    header p {
-      font-size: 1.2rem;
-      color: #555;
-    }
-    img {
-      max-width: 100%;
-      height: auto;
-      border-radius: 8px;
-    }
-    .container {
-      max-width: 960px;
-      margin: 0 auto;
-      padding: 1rem;
-    }
-    .hero-image {
-      width: 100%;
-      border-radius: 12px;
-      margin-bottom: 2rem;
-    }
-    .form-group {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
-      margin-bottom: 2rem;
-    }
-    .form-group input, .form-group select {
-      flex: 1 1 200px;
-      padding: 0.75rem;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-    }
-    .routes {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 1rem;
-      margin-bottom: 2rem;
-    }
-    .route-card {
-      background: #fff;
-      border: 1px solid #eee;
-      border-radius: 8px;
-      padding: 1rem;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-    }
-    .features, .articles {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 2rem;
-      margin-bottom: 2rem;
-    }
-    .feature, .article {
-      background: #fff;
-      padding: 1rem;
-      border-radius: 8px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-    }
-    footer {
-      text-align: center;
-      padding: 2rem;
-      font-size: 0.9rem;
-      color: #777;
-    }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Дышать — Тишина</title>
+  <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-  <header>
-    <div style="font-size: 3rem;">🚌</div>
-    <h1>QuickTravel</h1>
-    <p>Подорожуй легко</p>
-  </header>
-
-  <div class="container">
-    <img class="hero-image" src="https://images.unsplash.com/photo-1627963115726-9def3a8c0d42?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Nzh8MHwxfHNlYXJjaHwyfHx1a3JhaW5lJTIwdHJhdmVsfGVufDB8fHx8MTc1MzIxMjI1N3ww&ixlib=rb-4.1.0&q=85" alt="Ukraine travel" />
-
-    <h2>Подорожуйте Україною легко</h2>
-    <p>Знаходьте та бронюйте квитки на автобус, поїзд і літак за найкращими цінами. Швидко, зручно, надійно.</p>
-
-    <div class="form-group">
-      <input type="text" placeholder="Звідки" />
-      <input type="text" placeholder="Куди" />
-      <input type="date" />
-      <select>
-        <option>Транспорт</option>
-        <option>Автобус</option>
-        <option>Поїзд</option>
-        <option>Літак</option>
-      </select>
-      <select>
-        <option>Пасажири</option>
-        <option>1</option>
-        <option>2</option>
-        <option>3+</option>
-      </select>
-    </div>
-
-    <h3>Популярні маршрути</h3>
-    <div class="routes">
-      <div class="route-card">
-        <strong>Київ → Львів</strong><br>
-        Час у дорозі: 8 год<br>
-        450 грн
-      </div>
-      <div class="route-card">
-        <strong>Харків → Дніпро</strong><br>
-        Час у дорозі: 5 год<br>
-        320 грн
-      </div>
-      <div class="route-card">
-        <strong>Одеса → Київ</strong><br>
-        Час у дорозі: 7 год<br>
-        520 грн
-      </div>
-      <div class="route-card">
-        <strong>Львів → Івано-Франківськ</strong><br>
-        Час у дорозі: 3 год<br>
-        180 грн
-      </div>
-    </div>
-
-    <h3>Чому обирають нас?</h3>
-    <div class="features">
-      <div class="feature">
-        <h4>💰 Найкращі ціни</h4>
-        <p>Порівнюємо тисячі пропозицій від різних перевізників, щоб знайти найвигіднішу ціну для вас.</p>
-      </div>
-      <div class="feature">
-        <h4>⚡ Швидке бронювання</h4>
-        <p>Забронюйте квиток за лічені хвилини. Простий та зрозумілий інтерфейс.</p>
-      </div>
-      <div class="feature">
-        <h4>🛡️ Безпечні платежі</h4>
-        <p>Захищені платежі та гарантія повернення коштів у випадку скасування.</p>
-      </div>
-    </div>
-
-    <h3>Корисні статті</h3>
-    <div class="articles">
-      <div class="article">
-        <img src="https://images.unsplash.com/photo-1597143966956-bf92dfd1835f?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Nzh8MHwxfHNlYXJjaHwxfHx1a3JhaW5lJTIwdHJhdmVsfGVufDB8fHx8MTc1MzIxMjI1N3ww&ixlib=rb-4.1.0&q=85" alt="Tips" />
-        <h4>Як заощадити на подорожах Україною</h4>
-        <p>Практичні поради щодо планування бюджетних поїздок та пошуку знижок на транспорт.</p>
-      </div>
-      <div class="article">
-        <img src="https://images.unsplash.com/photo-1633096781994-4545a623ac5d?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDQ2MzR8MHwxfHNlYXJjaHwyfHxtb2Rlcm4lMjB0cmFuc3BvcnRhdGlvbnxlbnwwfHx8fDE3NTMyMTIyNjV8MA&ixlib=rb-4.1.0&q=85" alt="Transport" />
-        <h4>Вибір транспорту: автобус vs поїзд</h4>
-        <p>Порівняння комфорту, швидкості та вартості різних видів транспорту в Україні.</p>
-      </div>
-      <div class="article">
-        <h4>Топ-10 міст України для відвідування</h4>
-        <p>Огляд найкрасивіших та найцікавіших міст України з порадами щодо транспорту.</p>
-      </div>
-    </div>
-  </div>
-
-  <footer>
-    <a href="https://emergent.sh" style="display: flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; color: #555;">
-      <img src="https://avatars.githubusercontent.com/in/1201222?s=120&u=2686cf91179bbafbc7a71bfbc43004cf9ae1acea&v=4" width="20" height="20" />
-      Made with Emergent
-    </a>
-  </footer>
+  <main>
+    <div id="circle"></div>
+    <button onclick="history.back()">Назад</button>
+  </main>
+  <script>
+    const circle = document.getElementById('circle');
+    let inhale = true;
+    setInterval(() => {
+      circle.style.transform = inhale ? 'scale(1.5)' : 'scale(1)';
+      inhale = !inhale;
+    }, 4000);
+  </script>
 </body>
 </html>
