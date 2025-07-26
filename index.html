@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Смотрите новинки фильмов, трейлеры и подборки по жанрам и годам. Онлайн кинотеатр на русском и украинском языках.">
+  <meta name="keywords" content="фильмы 2025, трейлеры, новинки кино, смотреть онлайн, кино на русском, кино на украинском">
+  <title>Онлайн Кинотеатр</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: Arial, sans-serif; background: #121212; color: #f0f0f0; }
+    header { background: #1f1f1f; padding: 20px; text-align: center; }
+    nav a { color: #fff; margin: 0 15px; text-decoration: none; font-weight: bold; }
+    nav a:hover { color: #00ffc3; }
+    .container { padding: 20px; max-width: 1200px; margin: auto; }
+    .movie-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 15px; }
+    .movie-card { background: #1e1e1e; padding: 10px; border-radius: 10px; transition: 0.3s; }
+    .movie-card:hover { transform: scale(1.03); }
+    .movie-card img { width: 100%; border-radius: 5px; }
+    footer { background: #1f1f1f; text-align: center; padding: 15px; margin-top: 40px; }
+    .pagination { text-align: center; margin-top: 20px; }
+    .pagination button { margin: 0 5px; padding: 8px 12px; border: none; background: #333; color: white; border-radius: 5px; cursor: pointer; }
+    .pagination button:hover { background: #00ffc3; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🎬 Онлайн Кинотеатр</h1>
+    <nav>
+      <a href="#" onclick="loadMovies('all')">Главная</a>
+      <a href="#" onclick="loadMovies('year')">По годам</a>
+      <a href="#" onclick="loadMovies('genre')">По жанрам</a>
+      <a href="#" onclick="loadMovies('trailers')">Трейлеры</a>
+      <a href="#" onclick="switchLanguage()" id="langSwitch">UA</a>
+    </nav>
+  </header>
+  <div class="container">
+    <div id="movies" class="movie-grid"></div>
+    <div class="pagination" id="pagination"></div>
+  </div>
+  <footer>
+    <p>&copy; 2025 Онлайн Кинотеатр. Все права защищены.</p>
+  </footer>
+
+  <script>
+    let page = 1;
+    let lang = 'ru';
+    const moviesDiv = document.getElementById("movies");
+    const pagination = document.getElementById("pagination");
+
+    function switchLanguage() {
+      lang = lang === 'ru' ? 'uk' : 'ru';
+      document.getElementById("langSwitch").textContent = lang === 'ru' ? 'UA' : 'RU';
+      loadMovies('all');
+    }
+
+    async function loadMovies(type) {
+      const res = await fetch(`https://videocdn.tv/api/movies?api_token=demo&ordering=-year&page=${page}`);
+      const data = await res.json();
+      renderMovies(data.data);
+      renderPagination(data);
+    }
+
+    function renderMovies(movies) {
+      moviesDiv.innerHTML = '';
+      movies.forEach(movie => {
+        const card = document.createElement('div');
+        card.className = 'movie-card';
+        card.innerHTML = `
+          <img src="${movie.poster || 'https://via.placeholder.com/200x300?text=No+Image'}" alt="${movie.title_ru || movie.title}">
+          <h4>${movie.title_ru || movie.title}</h4>
+          <p>${movie.year}</p>
+        `;
+        moviesDiv.appendChild(card);
+      });
+    }
+
+    function renderPagination(data) {
+      pagination.innerHTML = '';
+      for (let i = 1; i <= 10; i++) {
+        const btn = document.createElement('button');
+        btn.textContent = i;
+        btn.onclick = () => { page = i; loadMovies('all'); };
+        pagination.appendChild(btn);
+      }
+    }
+
+    loadMovies('all');
+  </script>
+</body>
+</html>
