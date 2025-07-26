@@ -1,31 +1,179 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <title>Тест загрузки фильмов</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>КиноСайт — Новинки и Фильмы Онлайн</title>
+<meta name="description" content="Смотри фильмы онлайн — новинки, жанры, трейлеры. Автоматическая загрузка фильмов с vidsrc.to." />
+<style>
+  body {
+    margin: 0; font-family: Arial, sans-serif; background: #121212; color: #eee;
+  }
+  header {
+    background: #1f1f1f; padding: 1rem;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  nav a {
+    color: #eee; text-decoration: none; margin: 0 10px; font-weight: bold;
+  }
+  nav a:hover {
+    color: #61dafb;
+  }
+  main {
+    padding: 1rem;
+  }
+  .movies-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 15px;
+  }
+  .movie-card {
+    background: #222; border-radius: 8px; overflow: hidden; cursor: pointer;
+    transition: transform 0.2s ease-in-out; display: flex; flex-direction: column;
+    height: 330px;
+  }
+  .movie-card:hover {
+    transform: scale(1.05);
+  }
+  .movie-poster {
+    width: 100%; height: 260px; object-fit: cover;
+  }
+  .movie-title {
+    padding: 0.5rem; font-size: 1rem; text-align: center; flex-grow: 1;
+  }
+  /* Модальное окно с плеером */
+  #playerModal {
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.9); display: none; justify-content: center; align-items: center;
+    z-index: 1000; padding: 1rem;
+  }
+  #playerModal iframe {
+    width: 100%; max-width: 900px; height: 70vh; border: none; border-radius: 10px;
+  }
+  #closeBtn {
+    position: fixed; top: 15px; right: 20px; font-size: 3rem; color: #eee;
+    cursor: pointer; user-select: none; z-index: 1100;
+  }
+  /* Пагинация */
+  .pagination {
+    margin-top: 20px; text-align: center;
+  }
+  .pagination button {
+    background: #333; color: #eee; border: none; padding: 8px 12px; margin: 0 4px;
+    border-radius: 5px; cursor: pointer; font-weight: bold;
+    transition: background 0.3s;
+  }
+  .pagination button:hover:not(:disabled) {
+    background: #555;
+  }
+  .pagination button:disabled {
+    background: #555; cursor: default;
+  }
+</style>
 </head>
 <body>
-  <h1>Новинки фильмов (тест)</h1>
-  <ul id="list"></ul>
 
-  <script>
-    fetch('https://vidsrc.to/vapi/movie/new/1')
-      .then(res => res.json())
-      .then(data => {
-        const ul = document.getElementById('list');
-        if (!data.result || data.result.length === 0) {
-          ul.innerHTML = '<li>Фильмы не найдены</li>';
-          return;
-        }
-        data.result.forEach(movie => {
-          const li = document.createElement('li');
-          li.textContent = movie.title + ' (' + movie.year + ')';
-          ul.appendChild(li);
-        });
-      })
-      .catch(e => {
-        document.body.innerHTML += '<p>Ошибка: ' + e.message + '</p>';
+<header>
+  <h1>КиноСайт 🎬</h1>
+  <nav>
+    <a href="#" data-filter="new">Новинки</a>
+    <a href="#" data-filter="add">Недавно добавленные</a>
+  </nav>
+</header>
+
+<main>
+  <div class="movies-grid" id="moviesGrid"></div>
+  <div class="pagination" id="pagination"></div>
+</main>
+
+<!-- Плеер -->
+<div id="playerModal">
+  <div id="closeBtn">&times;</div>
+  <iframe id="playerFrame" allowfullscreen></iframe>
+</div>
+
+<script>
+  const moviesGrid = document.getElementById('moviesGrid');
+  const pagination = document.getElementById('pagination');
+  const playerModal = document.getElementById('playerModal');
+  const playerFrame = document.getElementById('playerFrame');
+  const closeBtn = document.getElementById('closeBtn');
+
+  let currentPage = 1;
+  let currentFilter = 'new';
+  const totalPages = 10;
+
+  async function loadMovies(filter = 'new', page = 1) {
+    moviesGrid.innerHTML = '<p>Загрузка фильмов...</p>';
+    try {
+      const res = await fetch(`https://vidsrc.to/vapi/movie/${filter}/${page}`);
+      const data = await res.json();
+
+      if (!data.result || data.result.length === 0) {
+        moviesGrid.innerHTML = '<p>Фильмы не найдены.</p>';
+        pagination.innerHTML = '';
+        return;
+      }
+
+      moviesGrid.innerHTML = '';
+      data.result.forEach(movie => {
+        const movieCard = document.createElement('div');
+        movieCard.className = 'movie-card';
+        const id = movie.imdb_id || movie.id || '';
+        movieCard.innerHTML = `
+          <img class="movie-poster" src="${movie.poster}" alt="${movie.title}" />
+          <div class="movie-title">${movie.title}</div>
+        `;
+        movieCard.onclick = () => openPlayer(id);
+        moviesGrid.appendChild(movieCard);
       });
-  </script>
+
+      setupPagination(page, totalPages);
+    } catch (e) {
+      moviesGrid.innerHTML = '<p>Ошибка загрузки фильмов.</p>';
+      console.error(e);
+    }
+  }
+
+  function setupPagination(current, total) {
+    pagination.innerHTML = '';
+    for (let i = 1; i <= total; i++) {
+      const btn = document.createElement('button');
+      btn.textContent = i;
+      btn.disabled = (i === current);
+      btn.onclick = () => {
+        currentPage = i;
+        loadMovies(currentFilter, currentPage);
+      };
+      pagination.appendChild(btn);
+    }
+  }
+
+  function openPlayer(id) {
+    if (!id) return alert('ID фильма отсутствует');
+    playerFrame.src = `https://vidsrc.to/embed/movie/${id}`;
+    playerModal.style.display = 'flex';
+  }
+
+  closeBtn.onclick = () => {
+    playerModal.style.display = 'none';
+    playerFrame.src = '';
+  };
+
+  playerModal.onclick = e => {
+    if (e.target === playerModal) closeBtn.onclick();
+  };
+
+  document.querySelectorAll('nav a').forEach(link => {
+    link.onclick = e => {
+      e.preventDefault();
+      currentFilter = link.dataset.filter;
+      currentPage = 1;
+      loadMovies(currentFilter, currentPage);
+    };
+  });
+
+  loadMovies(currentFilter, currentPage);
+</script>
+
 </body>
 </html>
